@@ -6,9 +6,7 @@
     ],
     "type": "library",
     "license": "MIT",
-    "require": {
-        "phpoffice/phpspreadsheet": "1.27.0"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "Daiyong\\": "src/"

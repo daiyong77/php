@@ -7,7 +7,7 @@ class File
 {
 	public static $path = '../'; //当前项目路径
 	//获取当前项目的绝对地址
-	//path('文件相对项目地址或者绝对地址','没有文件夹则创建')
+	//path('文件相对项目地址或者绝对地址')没有文件夹则创建
 	//return 绝对地址
 	public static function path($file = '')
 	{

@@ -289,7 +289,7 @@ class Db
     {
         return array_reverse(self::getFather2($table, $fid));
     }
-    public static function getFather2($table, $fid)
+    private static function getFather2($table, $fid)
     {
         $list = array();
         $father = db::find($table, array('id' => $fid));
