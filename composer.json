@@ -1,26 +1,26 @@
 {
     "name": "daiyong/php",
     "description": "php库",
+    "keywords": [
+        "PHP"
+    ],
+    "homepage": "https://github.com/daiyong77/php",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "stable",
-    "require": {
-        "phpoffice/phpspreadsheet": "1.27.0"
-    },
-    "config": {
-        "platform": {
-            "php": "7.4"
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "Daiyong\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "daiyong",
             "email": "1031850847@qq.com"
         }
-    ]
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "phpoffice/phpspreadsheet": "1.27.0"
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Daiyong\\": "src/"
+        }
+    }
 }
