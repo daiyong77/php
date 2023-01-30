@@ -4,8 +4,6 @@
     "keywords": [
         "PHP"
     ],
-    "homepage": "https://github.com/daiyong77/php",
-    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -14,10 +12,8 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
         "phpoffice/phpspreadsheet": "1.27.0"
     },
-    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Daiyong\\": "src/"
