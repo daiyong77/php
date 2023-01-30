@@ -1,6 +1,9 @@
 {
     "name": "daiyong/php",
     "description": "php库",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
     "require": {
         "phpoffice/phpspreadsheet": "1.27.0"
     },
@@ -19,6 +22,5 @@
             "name": "daiyong",
             "email": "1031850847@qq.com"
         }
-    ],
-    "license": "MIT"
+    ]
 }
