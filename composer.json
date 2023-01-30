@@ -4,13 +4,8 @@
     "keywords": [
         "PHP"
     ],
+    "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "daiyong",
-            "email": "1031850847@qq.com"
-        }
-    ],
     "require": {
         "phpoffice/phpspreadsheet": "1.27.0"
     },
@@ -18,5 +13,11 @@
         "psr-4": {
             "Daiyong\\": "src/"
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "daiyong",
+            "email": "1031850847@qq.com"
+        }
+    ]
 }
