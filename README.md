@@ -1,3 +1,4 @@
+# 基本方法操作
 # 数据库操作,更多复杂写法可以查看src/Db.php
 Daiyong\Db::connect('mysql:host=127.0.0.1;dbname=test','root','123456');//数据库链接
 Daiyong\Db::insert('table',array('key'=>'value','key2'=>'value2'))//插入
