@@ -1,0 +1,23 @@
+{
+    "name": "daiyong/php",
+    "description": "php库",
+    "require": {
+        "phpoffice/phpspreadsheet": "1.27.0"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Daiyong\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "daiyong",
+            "email": "1031850847@qq.com"
+        }
+    ]
+}
