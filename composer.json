@@ -1,11 +1,16 @@
 {
     "name": "daiyong/php",
-    "description": "php库",
+    "description": "php库,包含数据库操作、文件操作、远程抓取、一些常用的方法",
     "keywords": [
         "PHP"
     ],
     "type": "library",
     "license": "MIT",
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        }
+    },
     "require": {},
     "autoload": {
         "psr-4": {
