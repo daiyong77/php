@@ -1,5 +1,5 @@
 # php库,建议php版本在7.4及以上  
-  
+安装方式 composer require daiyong/php
 ## 数据库操作  
 Db::connect() //数据库链接  
 ```
