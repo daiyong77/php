@@ -3,7 +3,7 @@
  * @Author: daiyong 1031850847@qq.com
  * @Date: 2023-01-30 17:24:29
  * @LastEditors: daiyong
- * @LastEditTime: 2023-01-31 10:00:24
+ * @LastEditTime: 2023-01-31 17:07:57
  * @Description: 文件操作
  */
 
@@ -11,7 +11,7 @@ namespace Daiyong;
 
 class File
 {
-	public static $path = '../../../../'; //当前项目路径
+	public static $path = __DIR__ . '/../../../../'; //当前项目路径
 
 	/**
 	 * @description: 获取当前项目的绝对地址,没有文件夹则创建
