@@ -1,21 +1,65 @@
 <?php
+/*
+ * @Author: daiyong 1031850847@qq.com
+ * @Date: 2023-01-30 17:24:29
+ * @LastEditors: daiyong
+ * @LastEditTime: 2023-01-31 09:59:12
+ * @Description: 数据库操作
+ */
 
 namespace Daiyong;
 
 use PDO;
 use PDOException;
 
-//数据库
-//db::connect('mysql:host=127.0.0.1;dbname=test','root','root','表前缀','utf8');
-//db::$pdo 可以使用pdo原生写法，前提必须先连接数据库
 class Db
 {
     private static $config = array();
     public static $pdo;
     public static $key = 'id'; //表的主键
-    //插入数据(只支持简易sql,原生请用query)
-    // insert('table',array('key'=>'value','key2'=>'value2'))
-    // return 插入的主键号
+
+    /**
+     * @description: 数据库连接
+     * @param {例:mysql:host=127.0.0.1;dbname=login} $connect
+     * @param {string} $username
+     * @param {string} $password
+     * @param {例:utf8} $charset
+     * @return {pdo}
+     */
+    public static function connect($connect = '', $username = '', $password = '', $charset = 'utf8')
+    {
+        if (is_array($connect) && $connect) {
+            $username = $connect['username'];
+            $password = $connect['password'];
+            $charset = $connect['charset'];
+            $connect = $connect['connect'];
+        }
+        if (!$connect) {
+            return self::$pdo;
+        } else {
+            self::$config = array(
+                'connect' => $connect,
+                'username' => $username,
+                'password' => $password,
+                'charset' => $charset,
+            );
+        }
+        try {
+            self::$pdo = @new PDO(self::$config['connect'], self::$config['username'], self::$config['password']);
+        } catch (PDOException $e) {
+            exit('数据库连接失败，错误信息：' . iconv('gbk', 'utf-8', $e->getMessage()) . PHP_EOL);
+        }
+        self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //产生致命错误
+        self::$pdo->exec('set names ' . self::$config['charset']);
+        return self::$pdo;
+    }
+
+    /**
+     * @description: 插入数据
+     * @param {表名} $table
+     * @param {数组} $data
+     * @return {插入的主键号}
+     */
     public static function insert($table, $data = array())
     {
         $table = self::tableName($table);
@@ -36,12 +80,15 @@ class Db
         self::query($sql, $data_new);
         return self::$pdo->lastinsertid();
     }
-    //删除数据(只支持简易sql,原生请用query)
-    //delete('table',array('id'=>1,'username'=>'daiyong'))
-    //给只有一个?的语句传参可以为字符串
-    //delete('table','fid=? or id!=?',array(1,2))
-    //delete('table','fid=:fid or id!=:id',array(':id'=>1,':fid'=>2))
-    //return 影响的行数
+
+    /**
+     * @description: 删除数据
+     * delete('table',array('id'=>1,'username'=>'daiyong'))
+     * 第二个参数给只有一个替代字符的语句传参可以为字符串
+     * delete('table','fid=? or id!=?',array(1,2))
+     * delete('table','fid=:fid or id!=:id',array(':id'=>1,':fid'=>2))
+     * @return {影响的行数}
+     */
     public static function delete($table, $where = array(), $data = array())
     {
         $table = self::tableName($table);
@@ -59,12 +106,15 @@ class Db
         $sql = "DELETE FROM {$table} WHERE {$where}";
         return self::query($sql, $data)->rowCount();
     }
-    //修改数据
-    //update('table',array('name'=>'daiyong','age'=>'24'),array('id'=>1))
-    //给只有一个?的语句传参可以为字符串
-    //update('table',array('name'=>'daiyong'),'id=? or id=?',array(1,2))
-    //update('table',array('name'=>'daiyong'),'id=:id or id=:id2',array(':id'=>1,':id2'=>2))
-    //return 影响的行数
+
+    /**
+     * @description: 修改数据
+     * update('table',array('name'=>'daiyong','age'=>'24'),array('id'=>1))
+     * 第二个参数给只有一个替代字符的语句传参可以为字符串
+     * update('table',array('name'=>'daiyong'),'id=? or id=?',array(1,2))
+     * update('table',array('name'=>'daiyong'),'id=:id or id=:id2',array(':id'=>1,':id2'=>2))
+     * @return {影响的行数}
+     */
     public static function update($table, $data = array(), $where = array(), $where_data = array())
     {
         if (!$where) {
@@ -108,13 +158,17 @@ class Db
         $sql = "UPDATE {$table} SET {$set} WHERE {$where}";
         return self::query($sql, $data)->rowCount();
     }
-    //查询列表
-    //findAll('table|username,password',array('id'=>1),'order by id desc limit 0,10','id')
-    //给只有一个?的语句传参可以为字符串
-    //findAll('select * from table where sex=? or sex=? limit 0,10',array('男','未知'))
-    //以id为数组key值
-    //findAll('select * from table where sex=:sex limit 0,10',array(':sex'=>'男'),'id')
-    //return array
+
+    /**
+     * @description: 查询列表
+     * findAll('table|username,password',array('id'=>1),'order by id desc limit 0,10','id')
+     * 第二个参数给只有一个替代字符的语句传参可以为字符串
+     * findAll('select * from table where sex=? or sex=? limit 0,10',array('男','未知'))
+     * findAll('select * from table where sex=:sex1 or sex=:sex2 limit 0,10',array('sex1'=>'男','sex2'=>'未知'))
+     * 以id为数组key值
+     * findAll('select * from table where sex=:sex limit 0,10',array(':sex'=>'男'),'id')
+     * @return {数据列表}
+     */
     public static function findAll($sql, $data = array(), $ol = '', $key = '')
     {
         if (!(strpos($sql, ' ') === 0 || strpos($sql, ' '))) {
@@ -162,12 +216,15 @@ class Db
         }
         return $data;
     }
-    //查询单个
-    //find('table|username,password',array('id'=>1))
-    //给只有一个?的语句传参可以为字符串
-    //find('select * from table where id=? or is=?',array('男','1'))
-    //find('select * from table where id=:id and is=:is',array(':id'=>'男',':is'=>'24'))
-    //rerturn array|string
+
+    /**
+     * @description: 查询单个
+     * find('table|username,password',array('id'=>1))
+     * 第二个参数给只有一个替代字符的语句传参可以为字符串
+     * find('select * from table where id=? or is=?',array('男','1'))
+     * find('select * from table where id=:id and is=:is',array(':id'=>'男',':is'=>'24'))
+     * @return {数组|如果只查询一个值则返回字符串}
+     */
     public static function find($sql, $data = array(), $ol = '')
     {
         if (!(strpos($sql, ' ') === 0 || strpos($sql, ' '))) {
@@ -193,39 +250,13 @@ class Db
         }
         return $data;
     }
-    //数据库连接
-    //connect('mysql:host=127.0.0.1;dbname=login','root','root','utf8');
-    //return pdo
-    public static function connect($connect = '', $username = '', $password = '', $charset = 'utf8')
-    {
-        if (is_array($connect) && $connect) {
-            $username = $connect['username'];
-            $password = $connect['password'];
-            $charset = $connect['charset'];
-            $connect = $connect['connect'];
-        }
-        if (!$connect) {
-            return self::$pdo;
-        } else {
-            self::$config = array(
-                'connect' => $connect,
-                'username' => $username,
-                'password' => $password,
-                'charset' => $charset,
-            );
-        }
-        try {
-            self::$pdo = @new PDO(self::$config['connect'], self::$config['username'], self::$config['password']);
-        } catch (PDOException $e) {
-            exit('数据库连接失败，错误信息：' . iconv('gbk', 'utf-8', $e->getMessage()) . PHP_EOL);
-        }
-        self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //产生致命错误
-        self::$pdo->exec('set names ' . self::$config['charset']);
-        return self::$pdo;
-    }
-    //执行sql
-    //query('sql语句可带?或:key','数据')
-    //return sql结果
+
+    /**
+     * @description: 执行sql语句
+     * @param {sql语句可带?或:key} $sql
+     * @param {替代字符数组} $data
+     * @return {sql结果}
+     */
     public static function query($sql, $data = array())
     {
         if (!is_array($data)) $data = array($data);
@@ -247,18 +278,12 @@ class Db
         }
         return $result;
     }
-    //将数组转换成pdo标准sql语句与数据
-    // arrayWhere(array(
-    //     'username|like'=>'%daiyong%',
-    //     'password'=>'123456'
-    // ));
-    // return array(
-    //     'where'=>'username like :username and password=:password',
-    //     'data'=>array(
-    //         ':username'=>'%daiyong%',
-    //         ':password'=>'123456'
-    //     )
-    // )
+
+    /**
+     * @description: 转换简写sql
+     * @param {简写的sql数组} $array
+     * @return {pdo格式sql}
+     */
     private static function arrayWhere($array)
     {
         $where = array();
@@ -284,33 +309,12 @@ class Db
             'data' => $data
         );
     }
-    //获取树形数据父级信息
-    public static function getFather($table, $fid)
-    {
-        return array_reverse(self::getFather2($table, $fid));
-    }
-    private static function getFather2($table, $fid)
-    {
-        $list = array();
-        $father = db::find($table, array('id' => $fid));
-        $list[] = $father;
-        if ($father['fid']) {
-            $list = array_merge($list, self::getFather2($table, $father['fid']));
-        }
-        return $list;
-    }
-    //获取树形数据获取子集id
-    public static function getChildId($table, $id)
-    {
-        $list = array();
-        $child = db::findAll($table . '|id', array('fid' => $id));
-        foreach ($child as $v) {
-            $list[] = $v;
-            $list = array_merge($list, self::getChildId($table, $v));
-        }
-        return $list;
-    }
-    //解析简略sql写法的表名
+
+    /**
+     * @description: 解析简略sql写法的表名
+     * @param {表名} $table
+     * @return {详细表名}
+     */
     private static function tableName($table)
     {
         $has = strpos($table, '`');

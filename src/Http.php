@@ -1,30 +1,40 @@
 <?php
+/*
+ * @Author: daiyong 1031850847@qq.com
+ * @Date: 2023-01-30 15:30:09
+ * @LastEditors: daiyong
+ * @LastEditTime: 2023-01-31 10:11:16
+ * @Description: curl抓取远程连接内容
+ */
 
 namespace Daiyong;
 
+use Daiyong\File;
+
 class Http
 {
-	public static $path_log_curl = ''; //项目路径下的日志存放地址 例:cache/logs/curl.log
+	public static $logPath = ''; //项目路径下的日志存放地址 例:cache/logs/curl.log
 	public static $getcookie = ''; //获取cookie的路径
 	public static $timeout = 3; //超时设置
 	public static $repeat = 3; //请求失败后重复请求次数
 	public static $usleep = 200; //每次请求暂停都少毫秒
 	public static $agent = array(); //代理array(ip,port,username,password)
 	public static $header = array(); //头部信息
-	//curl抓取
-	//用法:(将覆盖掉$this中设置好的参数)
-	// curl('请求地址',array(
-	//  '302'=>'是否302跳转',
-	// 	'timeout'=>'超时时间',
-	// 	'repeat'=>'请求失败后的重复请求次数',
-	// 	'savecookie'=>'请求页面后的cookie保存地址',
-	// 	'getcookie'=>'cookie地址',
-	// 	'header'=>array('类似于chrome的一条一条的头信息','类似于chrome的一条一条的头信息'),
-	// 	'showheader'=>'是否返回头信息'
-	// 	'post'=>'post参数最好是url形式'
-	// ));
-	// 返回:
-	// 请求到的值
+
+	/**
+	 * @description: curl抓取
+	 * curl('请求地址',array(
+	 *	  '302'=>'是否302跳转',
+	 *	  'timeout'=>'超时时间',
+	 *	  'repeat'=>'请求失败后的重复请求次数',
+	 *	  'savecookie'=>'请求页面后的cookie保存地址,可为相对地址',
+	 *	  'getcookie'=>'cookie地址,可为相对地址',
+	 * 	  'header'=>array('类似于chrome的一条一条的头信息','类似于chrome的一条一条的头信息'),
+	 *	  'showheader'=>'是否返回头信息'
+	 *	  'post'=>'post参数最好是url形式'
+	 * ));
+	 * @return {string}
+	 */
 	public static function curl($url, $data = array())
 	{
 		//定义
@@ -56,8 +66,8 @@ class Http
 		}
 		//日志记录
 		$path_log = '';
-		if (self::$path_log_curl != '') {
-			$path_log = File::path(self::$path_log_curl);
+		if (self::$logPath != '') {
+			$path_log = File::path(self::$logPath);
 		}
 		if ($path_log != '' && !file_exists($path_log)) {
 			File::put($path_log, '#dy curl log');
@@ -127,12 +137,18 @@ class Http
 		return $content;
 	}
 
+	/**
+	 * @description: header中是否含有对应的头信息
+	 * @param {header集合} $data
+	 * @param {含有的头信息} $string
+	 * @return {boolean}
+	 */
 	private static function headerHas($data, $string)
 	{
-		$has = 0;
+		$has = false;
 		foreach ($data as $v) {
 			if (strpos($v, $string) === 0) {
-				$has = 1;
+				$has = true;
 				break;
 			}
 		}
