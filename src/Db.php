@@ -176,7 +176,7 @@ class Db
                 $key = $ol;
                 $ol = '';
             }
-            if (!$ol) $ol = 'limit 0,100'; //没有写就默认查询10000条
+            if (!$ol) $ol = 'limit 0,100'; //没有limit就默认查询100条
             //处理简易sql
             $sql = explode('|', $sql);
             $table = self::tableName($sql[0]);
