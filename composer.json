@@ -2,7 +2,7 @@
     "name": "daiyong/php",
     "description": "php库,包含数据库操作、文件操作、远程抓取、一些常用的方法,建议php版本在7.4及以上",
     "keywords": [
-        "PHP",
+        "php",
         "database",
         "file",
         "curl",
