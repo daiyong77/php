@@ -3,14 +3,13 @@
  * @Author: daiyong 1031850847@qq.com
  * @Date: 2023-01-30 15:30:09
  * @LastEditors: daiyong
- * @LastEditTime: 2023-01-31 09:51:44
+ * @LastEditTime: 2023-02-03 08:58:38
  * @Description: 常用方法
  */
 
 namespace Daiyong;
 
-class Func
-{
+class Func {
 
 	/**
 	 * @description: 随机数
@@ -18,8 +17,7 @@ class Func
 	 * @param {随机字符串} $string
 	 * @return {string}
 	 */
-	public static function random($count = 5, $string = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-	{
+	public static function random($count = 5, $string = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
 		$random = '';
 		for ($i = 0; $i < $count; $i++) {
 			if (function_exists('mb_strlen')) {
@@ -43,8 +41,7 @@ class Func
 	 * @param {类型0公钥1私钥} $type
 	 * @return {换行模式的rsa}
 	 */
-	public static function rsa64($str, $type = 0)
-	{
+	public static function rsa64($str, $type = 0) {
 		if (!$type) {
 			$type = 'PUBLIC';
 		} else {

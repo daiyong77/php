@@ -12,8 +12,7 @@ namespace Daiyong;
 use PDO;
 use PDOException;
 
-class Db
-{
+class Db {
     private static $config = array();
     public static $pdo;
     public static $key = 'id'; //表的主键
@@ -26,8 +25,7 @@ class Db
      * @param {例:utf8} $charset
      * @return {pdo}
      */
-    public static function connect($connect = '', $username = '', $password = '', $charset = 'utf8')
-    {
+    public static function connect($connect = '', $username = '', $password = '', $charset = 'utf8') {
         if (is_array($connect) && $connect) {
             $username = $connect['username'];
             $password = $connect['password'];
@@ -60,8 +58,7 @@ class Db
      * @param {数组} $data
      * @return {插入的主键号}
      */
-    public static function insert($table, $data = array())
-    {
+    public static function insert($table, $data = array()) {
         $table = self::tableName($table);
         foreach ($data as $k => $v) {
             if (!$v && $v !== 0) unset($data[$k]);
@@ -89,8 +86,7 @@ class Db
      * delete('table','fid=:fid or id!=:id',array(':id'=>1,':fid'=>2))
      * @return {影响的行数}
      */
-    public static function delete($table, $where = array(), $data = array())
-    {
+    public static function delete($table, $where = array(), $data = array()) {
         $table = self::tableName($table);
         if (!$where) {
             exit('不允许对' . $table . '进行全表删除' . PHP_EOL);
@@ -115,8 +111,7 @@ class Db
      * update('table',array('name'=>'daiyong'),'id=:id or id=:id2',array(':id'=>1,':id2'=>2))
      * @return {影响的行数}
      */
-    public static function update($table, $data = array(), $where = array(), $where_data = array())
-    {
+    public static function update($table, $data = array(), $where = array(), $where_data = array()) {
         if (!$where) {
             exit('不允许对' . $table . '进行全表修改' . PHP_EOL);
         }
@@ -169,8 +164,7 @@ class Db
      * findAll('select * from table where sex=:sex limit 0,10',array(':sex'=>'男'),'id')
      * @return {数据列表}
      */
-    public static function findAll($sql, $data = array(), $ol = '', $key = '')
-    {
+    public static function findAll($sql, $data = array(), $ol = '', $key = '') {
         if (!(strpos($sql, ' ') === 0 || strpos($sql, ' '))) {
             if (!(strpos($ol, ' ') === 0 || strpos($ol, ' '))) {
                 $key = $ol;
@@ -225,8 +219,7 @@ class Db
      * find('select * from table where id=:id and is=:is',array(':id'=>'男',':is'=>'24'))
      * @return {数组|如果只查询一个值则返回字符串}
      */
-    public static function find($sql, $data = array(), $ol = '')
-    {
+    public static function find($sql, $data = array(), $ol = '') {
         if (!(strpos($sql, ' ') === 0 || strpos($sql, ' '))) {
             if (!$ol) $ol = 'limit 0,1';
             //处理简易sql
@@ -257,8 +250,7 @@ class Db
      * @param {替代字符数组} $data
      * @return {sql结果}
      */
-    public static function query($sql, $data = array())
-    {
+    public static function query($sql, $data = array()) {
         if (!is_array($data)) $data = array($data);
         try {
             $result = self::connect()->prepare($sql);
@@ -284,8 +276,7 @@ class Db
      * @param {简写的sql数组} $array
      * @return {pdo格式sql}
      */
-    private static function arrayWhere($array)
-    {
+    private static function arrayWhere($array) {
         $where = array();
         $data = array();
         foreach ($array as $k => $v) {
@@ -315,8 +306,7 @@ class Db
      * @param {表名} $table
      * @return {详细表名}
      */
-    private static function tableName($table)
-    {
+    private static function tableName($table) {
         $has = strpos($table, '`');
         if (!$has && $has !== 0) {
             if (!strpos($table, '.')) {

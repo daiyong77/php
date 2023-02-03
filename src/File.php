@@ -9,8 +9,7 @@
 
 namespace Daiyong;
 
-class File
-{
+class File {
 	public static $path = __DIR__ . '/../../../../'; //当前项目路径
 
 	/**
@@ -18,8 +17,7 @@ class File
 	 * @param {文件相对项目地址或者绝对地址} $file
 	 * @return {string}
 	 */
-	public static function path($file = '')
-	{
+	public static function path($file = '') {
 		$root = __DIR__ . '/' . self::$path;
 		if (!$file) {
 			return $root;
@@ -39,8 +37,7 @@ class File
 	 * @param {是否追加} $append
 	 * @return {boolean}
 	 */
-	public static function put($file = '', $content = '', $append = '')
-	{
+	public static function put($file = '', $content = '', $append = '') {
 		$file = self::path($file);
 		if (!is_dir(dirname($file))) {
 			mkdir(dirname($file), 0777, true);
@@ -65,8 +62,7 @@ class File
 	 * @param {文件路径,可以为相对路径} $file
 	 * @return {string}
 	 */
-	public static function get($file)
-	{
+	public static function get($file) {
 		return @file_get_contents(self::path($file));
 	}
 
@@ -75,8 +71,7 @@ class File
 	 * @param {文件路径,可以为相对路径} $file
 	 * @return {boolean}
 	 */
-	public static function delete($file)
-	{
+	public static function delete($file) {
 		return unlink(self::path($file));
 	}
 }

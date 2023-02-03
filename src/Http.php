@@ -11,8 +11,7 @@ namespace Daiyong;
 
 use Daiyong\File;
 
-class Http
-{
+class Http {
 	public static $logPath = ''; //项目路径下的日志存放地址 例:cache/logs/curl.log
 	public static $getcookie = ''; //获取cookie的路径
 	public static $timeout = 3; //超时设置
@@ -35,8 +34,7 @@ class Http
 	 * ));
 	 * @return {string}
 	 */
-	public static function curl($url, $data = array())
-	{
+	public static function curl($url, $data = array()) {
 		//定义
 		if (!isset($data['timeout'])) {
 			$data['timeout'] = self::$timeout; //超时设置
@@ -143,8 +141,7 @@ class Http
 	 * @param {含有的头信息} $string
 	 * @return {boolean}
 	 */
-	private static function headerHas($data, $string)
-	{
+	private static function headerHas($data, $string) {
 		$has = false;
 		foreach ($data as $v) {
 			if (strpos($v, $string) === 0) {
